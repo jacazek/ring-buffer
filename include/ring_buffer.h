@@ -9,8 +9,8 @@ typedef struct RingBuffer {
 	char *buffer;
 } RingBuffer;
 
-extern uint8_t readRingBuffer(RingBuffer *ringBuffer);
-extern uint8_t writeRingBuffer(RingBuffer *ringBuffer, uint8_t value);
+extern int8_t readRingBuffer(RingBuffer *ringBuffer, uint8_t *value);
+extern int8_t writeRingBuffer(RingBuffer *ringBuffer, uint8_t value);
 extern struct RingBuffer* createRingBuffer(uint8_t capacity);
-extern uint8_t destroyRingBuffer(RingBuffer *ringBuffer);
+extern int8_t destroyRingBuffer(RingBuffer **ringBufferPointerAddress);
 #endif

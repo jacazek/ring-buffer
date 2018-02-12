@@ -3,15 +3,20 @@
 RingBuffer* createRingBuffer(uint8_t capacity) {
 	RingBuffer* retval = malloc(sizeof(RingBuffer));
 	retval->capacity = capacity;
+	retval->filled = 0;
+	retval->head = 0;
+	retval->tail = 0;
+	retval->buffer = malloc(sizeof(uint8_t) * capacity);
 	return retval;
 }
 
-uint8_t destroyRingBuffer(RingBuffer *ringBuffer) {
+int8_t destroyRingBuffer(RingBuffer **ringBufferPointerAddress) {
 	uint8_t retval = -1;
-	if (ringBuffer != 0) {
+	RingBuffer *ringBuffer = (*ringBufferPointerAddress);
+	if (ringBuffer != NULL) {
 		free(ringBuffer->buffer);
 		free(ringBuffer);
-		ringBuffer = 0;
+		*ringBufferPointerAddress = NULL;
 		retval = 0;
 	}
 	return retval;
