@@ -24,6 +24,7 @@ extern void writeRingBuffer(RingBuffer *ringBuffer, char value);
 /**
 	Create a ring buffer
 	@param {uint8_t} capacity The desired capacity of the buffer
+	@param {char*} buffer The buffer to back the ring buffer
 	@return A pointer to a new ring buffer if successful
 */
 extern struct RingBuffer createRingBuffer(uint8_t capacity, char *buffer);
