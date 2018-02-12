@@ -1,4 +1,5 @@
 **.o
+**.map
 **/dist
 **/build
 **.sublime-workspace

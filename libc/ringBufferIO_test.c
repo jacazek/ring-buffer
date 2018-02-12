@@ -3,26 +3,27 @@
 #include <test.h>
 #include "./createRingBuffer.c"
 
-RingBuffer* ringBuffer = NULL;
+RingBuffer ringBufferActual;
+RingBuffer *ringBuffer;
+char buffer[2];
 
 void setUp() {
-	ringBuffer = createRingBuffer(2);
+	ringBufferActual = createRingBuffer(2, buffer);
+	ringBuffer = &ringBufferActual;
 }
 
 void tearDown() {
-	destroyRingBuffer(&ringBuffer);
 }
 
 void GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful() {
-	TEST_ASSERT_EQUAL_UINT8(0, writeRingBuffer(ringBuffer, 5));
+	writeRingBuffer(ringBuffer, 5);
 	TEST_ASSERT_EQUAL_UINT8(1, ringBuffer->filled);
-	TEST_ASSERT_EQUAL_UINT8(1, ringBuffer->head);
 }
 
-void GivenAFullRingBuffer_WhenWrite_ThenByteWriteFails() {
+void GivenAFullRingBuffer_WhenWrite_ThenByteWriteOverwrites() {
 	writeRingBuffer(ringBuffer, 5);
 	writeRingBuffer(ringBuffer, 7);
-	TEST_ASSERT_EQUAL_INT8(-1, writeRingBuffer(ringBuffer, 5));
+	writeRingBuffer(ringBuffer, 5);
 	TEST_ASSERT_EQUAL_UINT8(2, ringBuffer->filled);
 }
 
@@ -60,7 +61,7 @@ void GivenAnEmptyBuffer_WhenRead_ThenReadFails() {
 int main() {
 	UNITY_BEGIN();
 	RUN_TEST(GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful);
-	RUN_TEST(GivenAFullRingBuffer_WhenWrite_ThenByteWriteFails);
+	RUN_TEST(GivenAFullRingBuffer_WhenWrite_ThenByteWriteOverwrites);
 	RUN_TEST(GivenARingBufferWithValueX_WhenRead_ThenValueReturned);
 	RUN_TEST(GivenARingBufferWithXValues_WhenReadXTimes_ThenValuesRead);
 	RUN_TEST(GivenARingBufferWithXValues_WhenRead1Time_ThenFilledDecremented);

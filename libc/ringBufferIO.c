@@ -1,17 +1,5 @@
 #include <ring_buffer.h>
 
-int8_t isFull(RingBuffer *ringBuffer) {
-	return ringBuffer->head == ringBuffer->tail && ringBuffer->filled > 0 ? 1 : 0;
-}
-
-int8_t isEmpty(RingBuffer *ringBuffer) {
-	return ringBuffer->head == ringBuffer->tail && ringBuffer->filled == 0 ? 1 : 0;
-}
-
-void adjustFill(RingBuffer *ringBuffer, int8_t amount) {
-	ringBuffer->filled += amount;
-}
-
 void advanceHead(RingBuffer *ringBuffer) {
 	ringBuffer->head++;
 	if (ringBuffer->head == ringBuffer->capacity) {
@@ -19,30 +7,20 @@ void advanceHead(RingBuffer *ringBuffer) {
 	}
 }
 
-void advanceTail(RingBuffer *ringBuffer) {
-	ringBuffer->tail++;
-	if (ringBuffer->tail == ringBuffer->capacity) {
-		ringBuffer->tail = 0;
+void writeRingBuffer(RingBuffer *ringBuffer, char value) {
+	ringBuffer->buffer[ringBuffer->head] = value;
+	advanceHead(ringBuffer);
+	if (ringBuffer->filled < ringBuffer->capacity) {
+		ringBuffer->filled += 1;
 	}
 }
 
-int8_t writeRingBuffer(RingBuffer *ringBuffer, uint8_t value) {
-	uint8_t retval = -1;
-	if (!isFull(ringBuffer)) {
-		ringBuffer->buffer[ringBuffer->head] = value;
-		adjustFill(ringBuffer, 1);
-		advanceHead(ringBuffer);
-		retval = 0;
-	}
-	return retval;
-}
-
-int8_t readRingBuffer(RingBuffer *ringBuffer, uint8_t *value) {
+int8_t readRingBuffer(RingBuffer *ringBuffer, char *value) {
 	int8_t retval = -1;
-	if (!isEmpty(ringBuffer)) {
-		(*value) = ringBuffer->buffer[ringBuffer->tail];
-		adjustFill(ringBuffer, -1);
-		advanceTail(ringBuffer);
+	if (ringBuffer->filled > 0) {
+		int8_t tail = ringBuffer->head - ringBuffer->filled;
+		(*value) = ringBuffer->buffer[tail < 0 ? tail + ringBuffer->capacity : tail];
+		ringBuffer->filled -= 1;
 		retval = 0;
 	}
 	return retval;
