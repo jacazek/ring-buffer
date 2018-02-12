@@ -1,6 +1,5 @@
 #include <ring_buffer.h>
 #include "../Unity/unity.h"
-#include <test.h>
 #include "./createRingBuffer.c"
 
 RingBuffer ringBufferActual;

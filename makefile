@@ -3,10 +3,12 @@ MCU_TARGET     = atmega2560
 
 
 DIST = ./dist/
+DIST_LIB = $(DIST)lib/
+DIST_INCLUDE = $(DIST)include/
 BUILD = ./build/
 TEST = ./test/
 MOCKS = ./test/mocks/
-DIRECTORIES = $(DIST) $(BUILD) $(TEST) $(MOCKS)
+DIRECTORIES = $(DIST) $(BUILD) $(TEST) $(MOCKS) $(DIST_LIB) $(DIST_INCLUDE)
 
 INCLUDE = ./include/
 LIBC = ./libc/
@@ -32,7 +34,8 @@ all: $(DIRECTORIES) $(PROJECT).a
 
 
 $(PROJECT).a: $(PROJECT).binary
-	$(AR) $(ARFLAGS) -o $(DIST)lib$@ $(BUILD)*.o
+	$(AR) $(ARFLAGS) -o $(DIST_LIB)lib$@ $(BUILD)*.o
+	cp $(INCLUDE)* $(DIST_INCLUDE)
 
 
 $(PROJECT).binary: $(SOURCE_FILES)
