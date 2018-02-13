@@ -56,7 +56,7 @@ $(TEST_FILES): %_test: $(LIBC)%.c
 example: example/main.c main.hex
 
 $(BUILD)main.elf: example/main.c
-	$(CC) $(CFLAGS) $(LDFLAGS) -o main.elf $< -I$(INCLUDE) -L$(DIST) -lring_buffer
+	$(CC) $(CFLAGS) $(LDFLAGS) -o main.elf $< -I$(DIST_INCLUDE) -L$(DIST_LIB) -lring_buffer
 	mv *.elf $(BUILD)
 
 main.hex: $(BUILD)main.elf
