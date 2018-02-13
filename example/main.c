@@ -1,9 +1,9 @@
 #include <ring_buffer.h>
 //#include <avr/io.h>
+static char buffer[8];
 
 int main() {
-	char buffer[10];
-	RingBuffer ringBuffer = createRingBuffer(10, buffer);
+	RingBuffer ringBuffer = createRingBuffer(8, buffer);
 	while(1) {
 
 	}

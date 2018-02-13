@@ -19,10 +19,18 @@ void GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful() {
 	TEST_ASSERT_EQUAL_UINT8(1, ringBuffer->filled);
 }
 
-void GivenAFullRingBuffer_WhenWrite_ThenByteWriteOverwrites() {
+void GivenAFullRingBufferWithOverwriteEnabled_WhenWrite_ThenByteWriteOverwrites() {
 	writeRingBuffer(ringBuffer, 5);
 	writeRingBuffer(ringBuffer, 7);
+	TEST_ASSERT_EQUAL_INT8(0, writeRingBuffer(ringBuffer, 5));
+	TEST_ASSERT_EQUAL_UINT8(2, ringBuffer->filled);
+}
+
+void GivenAFullRingBufferWithOverwriteDisabled_WhenWrite_ThenByteWriteFails() {
+	ringBuffer->settings &= ~(1<<OVERWRITE_EN);
 	writeRingBuffer(ringBuffer, 5);
+	writeRingBuffer(ringBuffer, 7);
+	TEST_ASSERT_EQUAL_INT8(-1, writeRingBuffer(ringBuffer, 5));
 	TEST_ASSERT_EQUAL_UINT8(2, ringBuffer->filled);
 }
 
@@ -60,7 +68,8 @@ void GivenAnEmptyBuffer_WhenRead_ThenReadFails() {
 int main() {
 	UNITY_BEGIN();
 	RUN_TEST(GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful);
-	RUN_TEST(GivenAFullRingBuffer_WhenWrite_ThenByteWriteOverwrites);
+	RUN_TEST(GivenAFullRingBufferWithOverwriteEnabled_WhenWrite_ThenByteWriteOverwrites);
+	RUN_TEST(GivenAFullRingBufferWithOverwriteDisabled_WhenWrite_ThenByteWriteFails);
 	RUN_TEST(GivenARingBufferWithValueX_WhenRead_ThenValueReturned);
 	RUN_TEST(GivenARingBufferWithXValues_WhenReadXTimes_ThenValuesRead);
 	RUN_TEST(GivenARingBufferWithXValues_WhenRead1Time_ThenFilledDecremented);

@@ -7,12 +7,22 @@ void advanceHead(RingBuffer *ringBuffer) {
 	}
 }
 
-void writeRingBuffer(RingBuffer *ringBuffer, char value) {
-	ringBuffer->buffer[ringBuffer->head] = value;
-	advanceHead(ringBuffer);
-	if (ringBuffer->filled < ringBuffer->capacity) {
-		ringBuffer->filled += 1;
+uint8_t overwriteEnabled(RingBuffer *ringBuffer) {
+	return ringBuffer->settings & (1<<OVERWRITE_EN);
+}
+
+int8_t writeRingBuffer(RingBuffer *ringBuffer, char value) {
+	int8_t retval = -1;
+	uint8_t belowCapacity = ringBuffer->filled < ringBuffer->capacity;
+	if (belowCapacity || overwriteEnabled(ringBuffer)) {
+		ringBuffer->buffer[ringBuffer->head] = value;
+		advanceHead(ringBuffer);
+		if (belowCapacity) {
+			ringBuffer->filled += 1;
+		}
+		retval = 0;
 	}
+	return retval;
 }
 
 int8_t readRingBuffer(RingBuffer *ringBuffer, char *value) {

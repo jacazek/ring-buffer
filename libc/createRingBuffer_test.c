@@ -19,6 +19,7 @@ void GivenACapacity_WhenCreateRingBuffer_RingBufferHasRequestedCapacity() {
 void GivenACapacity_WhenCreateRingBuffer_RingBufferInitializedCorrectly() {
 	TEST_ASSERT_EQUAL_UINT8(0, ringBuffer.head);
 	TEST_ASSERT_EQUAL_UINT8(0, ringBuffer.filled);
+	TEST_ASSERT_BIT_HIGH(OVERWRITE_EN, ringBuffer.settings);
 }
 
 int main() {
