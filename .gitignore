@@ -2,4 +2,4 @@
 **.map
 **/dist
 **/build
-**.sublime-workspace
+**.sublime*

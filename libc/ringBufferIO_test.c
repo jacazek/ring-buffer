@@ -65,6 +65,19 @@ void GivenAnEmptyBuffer_WhenRead_ThenReadFails() {
 	TEST_ASSERT_EQUAL_INT8(-1, readRingBuffer(ringBuffer, &value));
 }
 
+void GivenEnEmptyBuffer_WhenWriteThenRead_ThenBufferCycles() {
+	ringBufferActual = createRingBuffer(8, buffer);
+	uint8_t i=0;
+	char out = 0;
+	for (i = 0; i < 16; i ++) {
+		writeRingBuffer(&ringBufferActual, i);
+		TEST_ASSERT_EQUAL_UINT8(1, ringBufferActual.filled);
+		readRingBuffer(&ringBufferActual, &out);
+		TEST_ASSERT_EQUAL_UINT8(i, out);
+		TEST_ASSERT_EQUAL_UINT8(0, ringBufferActual.filled);
+	}
+}
+
 int main() {
 	UNITY_BEGIN();
 	RUN_TEST(GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful);
