@@ -2,13 +2,11 @@
 #include "../Unity/unity.h"
 #include "./createRingBuffer.c"
 
-RingBuffer ringBufferActual;
+RingBuffer *ringBufferActual;
 RingBuffer *ringBuffer;
-char buffer[2];
 
 void setUp() {
-	ringBufferActual = createRingBuffer(2, buffer);
-	ringBuffer = &ringBufferActual;
+	ringBuffer = createRingBuffer(2);
 }
 
 void tearDown() {
@@ -66,15 +64,15 @@ void GivenAnEmptyBuffer_WhenRead_ThenReadFails() {
 }
 
 void GivenEnEmptyBuffer_WhenWriteThenRead_ThenBufferCycles() {
-	ringBufferActual = createRingBuffer(8, buffer);
+	ringBuffer = createRingBuffer(8);
 	uint8_t i=0;
 	char out = 0;
 	for (i = 0; i < 16; i ++) {
-		writeRingBuffer(&ringBufferActual, i);
-		TEST_ASSERT_EQUAL_UINT8(1, ringBufferActual.filled);
-		readRingBuffer(&ringBufferActual, &out);
+		writeRingBuffer(ringBuffer, i);
+		TEST_ASSERT_EQUAL_UINT8(1, ringBuffer->filled);
+		readRingBuffer(ringBuffer, &out);
 		TEST_ASSERT_EQUAL_UINT8(i, out);
-		TEST_ASSERT_EQUAL_UINT8(0, ringBufferActual.filled);
+		TEST_ASSERT_EQUAL_UINT8(0, ringBuffer->filled);
 	}
 }
 
