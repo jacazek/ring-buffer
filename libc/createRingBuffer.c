@@ -10,3 +10,8 @@ RingBuffer* createRingBuffer(uint8_t capacity) {
 	retval->buffer = malloc(sizeof(uint8_t)*capacity);
 	return retval;
 }
+
+void destroyRingBuffer(RingBuffer *ringBuffer) {
+	free(ringBuffer->buffer);
+	free(ringBuffer);
+}

@@ -9,6 +9,7 @@ void setUp() {
 }
 
 void tearDown() {
+	destroyRingBuffer(ringBuffer);
 }
 
 void GivenACapacity_WhenCreateRingBuffer_RingBufferHasRequestedCapacity() {

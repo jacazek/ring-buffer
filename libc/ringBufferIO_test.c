@@ -10,6 +10,7 @@ void setUp() {
 }
 
 void tearDown() {
+	destroyRingBuffer(ringBuffer);
 }
 
 void GivenARingBuffer_WhenWrite_ThenByteWriteSuccessful() {

@@ -35,4 +35,10 @@ extern int8_t writeRingBuffer(RingBuffer *ringBuffer, char value);
 	@return A pointer to a new ring buffer if successful
 */
 extern struct RingBuffer* createRingBuffer(uint8_t capacity);
+
+/**
+	Destroy a given ring buffer
+	@param {RingBuffer*} ringBuffer The ring buffer to destroy
+*/
+extern void destroyRingBuffer(RingBuffer *ringBuffer);
 #endif
