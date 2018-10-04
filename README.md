@@ -1,6 +1,6 @@
 # ring-buffer
 
-Library for creating a uint8_t ring buffer
+Library for creating a uint8_t ring buffer.
 
 ## Build
 From the root of the project run `make` to make the library
